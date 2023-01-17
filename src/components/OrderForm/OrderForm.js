@@ -72,8 +72,9 @@ class OrderForm extends Component {
           value={this.state.name}
           onChange={(e) => this.handleNameChange(e)}
         />
-
-        {ingredientButtons}
+        <div className='ingredient-buttons-container'>
+          {ingredientButtons}
+        </div>
 
         <p>Order: {this.state.ingredients.join(", ") || "Nothing selected"}</p>
 
