@@ -11,7 +11,6 @@ const Orders = props => {
             return <li key={Math.random()}>{ingredient}</li>
           })}
         </ul>
-        <button className='delete-button' onClick={() => props.trashOrder(order.id)}>🗑</button>
       </div>
     )
   });
