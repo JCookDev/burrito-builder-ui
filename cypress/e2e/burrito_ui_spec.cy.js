@@ -36,10 +36,27 @@ describe('Burrito Builder', () => {
     cy.get('[name="cilantro"]').should('exist')
     cy.get('[name="sour cream"]').should('exist')
   })
+
   it('should allow users to add a name to the input', () => {
     cy.get('input')
       .should('have.value', '')
       .type("Test")
       .should('have.value', 'Test')
   })
+
+  it("When a user fills out the form, the input is reflected field's value", () => {
+    cy.get('form').get('input[name="name"]').type('text');
+    cy.get('form').get('input[name="name"]').should('have.value', 'text');
+
+    cy.get('form').get('button[name="beans"]').click();
+    cy.get('form').get('p').should('contain', 'Order: beans');
+    cy.get('form').get('button[name="steak"]').click();
+    cy.get('form').get('p').should('contain', 'Order: beans, steak');
+    cy.get('form').get('button[name="carnitas"]').click();
+    cy.get('form').get('p').should('contain', 'Order: beans, steak, carnitas');
+    cy.get('form').get('button[name="sofritas"]').click();
+    cy.get('form').get('p').should('contain', 'Order: beans, steak, carnitas, sofritas');
+    cy.get('form').get('button[name="lettuce"]').click();
+    cy.get('form').get('p').should('contain', 'Order: beans, steak, carnitas, sofritas, lettuce');
+  });
 })
