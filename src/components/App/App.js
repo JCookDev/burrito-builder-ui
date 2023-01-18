@@ -14,7 +14,7 @@ class App extends Component {
   }
 
   postOrder = (newOrder) => {
-    if (!newOrder.name || !newOrder.ingredients) {
+    if (newOrder.name.length === 0 || newOrder.ingredients.length === 0) {
       this.setState({ error: true });
     } else {
       fetch("http://localhost:3001/api/v1/orders", {
@@ -33,7 +33,7 @@ class App extends Component {
             return res.json();
           }
         })
-        .catch((err) => this.setState({ error: true}));
+        .catch((err) => this.setState({ error: err }));
     }
   };
 
@@ -46,28 +46,32 @@ class App extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if(prevState.orders.length !== this.state.orders.length) {
-      getOrders()    
-      .then(data => {
-        this.setState({orders: data.orders})
-      })
-        .catch(err => console.error('Error fetching:', err));
+    if (prevState.orders.length !== this.state.orders.length) {
+      getOrders()
+        .then((data) => {
+          this.setState({ orders: data.orders });
+        })
+        .catch((err) => console.error("Error fetching:", err));
     }
-  }
+  };
 
   addOrder = (newOrder) => {
-    this.setState({orders: [...this.state.orders, newOrder]})
-    this.postOrder(newOrder)
-  }
+    this.setState({ orders: [...this.state.orders, newOrder] });
+    this.postOrder(newOrder);
+  };
 
   render() {
     return (
       <main className="App">
         <header>
           <h1>Burrito Builder</h1>
-          <OrderForm addOrder={this.addOrder}/>
+          <OrderForm addOrder={this.addOrder} />
         </header>
-        {this.state.error && <h1 className='error-message'>Please add your name or select an ingredient</h1>}
+        {this.state.error && (
+          <h1 className="error-message">
+            Please add your name or select an ingredient
+          </h1>
+        )}
         <Orders orders={this.state.orders} />
       </main>
     );
